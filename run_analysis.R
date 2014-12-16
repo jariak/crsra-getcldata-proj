@@ -10,7 +10,6 @@ if (!file.exists("UCI HAR Dataset")) {
     fileURL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
     tmp.file <- tempfile()
     download.file(fileURL, destfile=tmp.file, method="curl")
-    #download(fileURL, tmp.file, mode = "wb") # with 'downloader' package
     unzip(tmp.file)
     unlink(tmp.file)
 }
@@ -19,10 +18,10 @@ if (!file.exists("UCI HAR Dataset")) {
 # from the large test and training data files (X_test.txt and X_train.txt) 
 # before reading in with fread(). sed is a common utility installed by default 
 # on all Linux/Mac OS's, and available for free on every platform that has a 
-# version of R. fread() is about tenfold faster than standard read.table(), so
-# it's worth some effort to make it work as smooth as possible. This piece of
-# preprocessing should be unnecessary, but it made fread() more stable on my
-# Linux system when reading those two large data files.
+# version of R. fread() is about tenfold faster than standard read.table(), so 
+# it's worth some effort to make it work as smooth as possible. This piece of 
+# preprocessing should be unnecessary, but it prevented fread() from crashing on
+# my Linux system when reading those two large data files.
 #
 # However, in the final version of this script I commented out the parts that
 # used sed, and replaced them with standard read.table() calls to remove any
@@ -73,9 +72,9 @@ res <- x_meansd[, lapply(.SD, mean), by=.(subject, activity)]
 # Replace activity codes with labels
 res[, activity := factor(activity, labels=activity_labels[[2]])]
 
-# Convert to long form
-m <- melt(res, id.vars=c("subject","activity"), variable.name="feature", value.name="mean")
+# Convert result to long form for final output
+melted <- melt(res, id.vars=c("subject","activity"), variable.name="feature", value.name="average")
 
-# Write tidy data in a file
+# Write tidy data in output file
 # (Read back in with: read.table("m.txt", header=TRUE)
-#write.table(m, "m.txt", row.names=FALSE, quote=FALSE)
+write.table(melted, "subj_act_feat_average.txt", row.names=FALSE, quote=FALSE)
