@@ -1,6 +1,9 @@
 # Coursera: Getting and Cleaning Data, Course Project
 #
 # run_analysis.R
+#
+# Produces a tidy dataset of the mean and standard deviation related variables
+# of the original data, averaged and grouped by subject and activity.
 
 library(reshape2)
 library(data.table)
@@ -30,14 +33,14 @@ if (!file.exists("UCI HAR Dataset")) {
 sedcmd <- "sed -e 's/  */ /g' -e 's/^ //'"
 
 # Read in test set data
-X_test <- fread(paste(sedcmd, "'UCI HAR Dataset/test/X_test.txt'"))      # sed
-#X_test <- as.data.table(read.table("UCI HAR Dataset/test/X_test.txt"))    # standard (slow)
+#X_test <- fread(paste(sedcmd, "'UCI HAR Dataset/test/X_test.txt'"))      # sed
+X_test <- as.data.table(read.table("UCI HAR Dataset/test/X_test.txt"))    # standard (slow)
 y_test <- fread("UCI HAR Dataset/test/y_test.txt")[[1]]
 subject_test <- fread("UCI HAR Dataset/test/subject_test.txt")[[1]]
 
 # Read in training set data
-X_train <- fread(paste(sedcmd, "'UCI HAR Dataset/train/X_train.txt'"))   # sed
-#X_train <- as.data.table(read.table("UCI HAR Dataset/train/X_train.txt")) # standard (slow)
+#X_train <- fread(paste(sedcmd, "'UCI HAR Dataset/train/X_train.txt'"))   # sed
+X_train <- as.data.table(read.table("UCI HAR Dataset/train/X_train.txt")) # standard (slow)
 y_train <- fread("UCI HAR Dataset/train/y_train.txt")[[1]]
 subject_train <- fread("UCI HAR Dataset/train/subject_train.txt")[[1]]
 
@@ -76,5 +79,5 @@ res[, activity := factor(activity, labels=activity_labels[[2]])]
 melted <- melt(res, id.vars=c("subject","activity"), variable.name="feature", value.name="average")
 
 # Write tidy data in output file
-# (Read back in with: read.table("m.txt", header=TRUE)
+# (Read back in with: read.table("subj_act_feat_average.txt", header=TRUE)
 write.table(melted, "subj_act_feat_average.txt", row.names=FALSE, quote=FALSE)
