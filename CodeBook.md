@@ -13,10 +13,12 @@ average | num | Feature's average value
 
 #### subject
 **int**
+
 Unique number (1-30) identifying the person under measurement.
 
 #### activity
 **factor w/ 6 levels**
+
 Name of the physical activity performed during the measurement. Activity labels are the same as in the `activity_labels.txt` file of the original dataset.
 
 Values:
@@ -29,6 +31,7 @@ Values:
 
 #### feature
 **factor w/ 66 levels**
+
 Measured variable. Only the mean and standard deviation related variables of the original data set are included. The labels are from the `features.txt` file of the original dataset. Parentheses are dropped from the original labels and slashes and commas are replaced with dots.
 
 Values:
@@ -101,4 +104,5 @@ Values:
 
 #### average
 **num**
+
 Average value of the feature. The value is unitless, as it is calculated from the original data, which is normalised between values -1 and 1.
